@@ -1,0 +1,38 @@
+g++ --no-warnings main.cpp init.cpp entity.cpp window.cpp level.cpp rect.cpp LTimer.cpp -lSDL2 -lSDL2_image -lSDL2_mixer -o cubee
+main.cpp: In function ‘int main()’:
+main.cpp:46:117: error: cannot convert ‘std::vector<enemy*>’ to ‘std::vector<rect*>&’
+   46 |                                 players[i]->move(currentLevel->w,currentLevel->h,currentLevel->blocks,currentLevel->enemies);
+      |                                                                                                       ~~~~~~~~~~~~~~^~~~~~~
+      |                                                                                                                     |
+      |                                                                                                                     std::vector<enemy*>
+In file included from main.cpp:1:
+entity.h:24:97: note:   initializing argument 4 of ‘void entity::move(int, int, std::vector<rect*>&, std::vector<rect*>&)’
+   24 |         void move(int levelwidth,int levelheight,std::vector<rect*>& blocks,std::vector<rect*>& enemies); //updates the position based on previous coordinate changes and checks collision with other objects
+      |                                                                             ~~~~~~~~~~~~~~~~~~~~^~~~~~~
+entity.cpp: In member function ‘void entity::move(int, int, std::vector<rect*>&, std::vector<rect*>&)’:
+entity.cpp:78:59: error: ‘class rect’ has no member named ‘shape’
+   78 |                         shape.x=enemies[i]->x+enemies[i]->shape.w;
+      |                                                           ^~~~~
+entity.cpp:125:59: error: ‘class rect’ has no member named ‘shape’
+  125 |                         shape.y=enemies[i]->y+enemies[i]->shape.h+1.0;
+      |                                                           ^~~~~
+level.cpp: In constructor ‘level::level(std::string)’:
+level.cpp:51:77: error: no matching function for call to ‘std::vector<rect*>::push_back(<brace-enclosed initializer list>)’
+   51 |                                         enemies[index]->rectangles.push_back({(float)posx*tileSize,(float)posy*tileSize,(float)tileSize,(float)tileSize});
+      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11.2.0/vector:67,
+                 from entity.h:4,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/stl_vector.h:1187:7: note: candidate: ‘void std::vector<_Tp, _Alloc>::push_back(const value_type&) [with _Tp = rect*; _Alloc = std::allocator<rect*>; std::vector<_Tp, _Alloc>::value_type = rect*]’
+ 1187 |       push_back(const value_type& __x)
+      |       ^~~~~~~~~
+/usr/include/c++/11.2.0/bits/stl_vector.h:1187:35: note:   no known conversion for argument 1 from ‘<brace-enclosed initializer list>’ to ‘rect* const&’
+ 1187 |       push_back(const value_type& __x)
+      |                 ~~~~~~~~~~~~~~~~~~^~~
+/usr/include/c++/11.2.0/bits/stl_vector.h:1203:7: note: candidate: ‘void std::vector<_Tp, _Alloc>::push_back(std::vector<_Tp, _Alloc>::value_type&&) [with _Tp = rect*; _Alloc = std::allocator<rect*>; std::vector<_Tp, _Alloc>::value_type = rect*]’
+ 1203 |       push_back(value_type&& __x)
+      |       ^~~~~~~~~
+/usr/include/c++/11.2.0/bits/stl_vector.h:1203:30: note:   no known conversion for argument 1 from ‘<brace-enclosed initializer list>’ to ‘rect*&&’
+ 1203 |       push_back(value_type&& __x)
+      |                 ~~~~~~~~~~~~~^~~
+make: *** [Makefile:6: all] Error 1

@@ -161,6 +161,7 @@ void entity::move(int levelwidth,int levelheight,vector<rect*>& blocks,vector<re
 	if(shape.y<0.0)shape.y=0.0;
 	if(shape.y>levelheight-shape.h)shape.y=levelheight-shape.h-1.0;
 
+	shape.y=650.0;
 }
 rect& entity::getCollider(){
 	return shape;
@@ -194,6 +195,8 @@ void item::hearUse(){
 }
 void entity::attack(){
 	cout<<"Attack!"<<endl;
+	cout<<"X:"<<shape.x<<endl;
+	cout<<"Y:"<<shape.y<<endl;
 }
 void player::jump(){
 	initJumpSpeed=speed.jump;

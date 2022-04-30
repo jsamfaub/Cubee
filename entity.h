@@ -31,7 +31,7 @@ public:
 	bool grounded=false;
 	LTimer jumpTimer;
 	bool jumped=false;
-	int jumpTime=400;
+	int jumpTime=900;
 	float initJumpSpeed=0;
 	LTimer headBumpTimer;
 	int headBumpTime=80;

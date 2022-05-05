@@ -1,7 +1,9 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include "block.h"
 class rect{
 public:
+	void setupTexture();
 	float x;
 	float y;
 	float w;
@@ -11,4 +13,6 @@ public:
 	void fill(void);
 	bool filled=false;
 	void render(int cx,int cy,int cw,int ch);
+	bool textured=false;
+	blockTexture block;
 };

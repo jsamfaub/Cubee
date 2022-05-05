@@ -10,6 +10,7 @@ SDL_Renderer* renderer=NULL;
 int  screenwidth=1280;
 int screenheight=720;
 int tileSize=50;
+string levelPath="data/levels/level3.lvl";
 sound jumpSound,bumpSound;
 level* currentLevel=NULL;
 vector<player*> players;
@@ -17,20 +18,20 @@ vector<rect*> playerRectangles;
 int numOfPlayers=2;
 extern window windows[3];
 
-int main(void){
+int main(int argc,char *argv[]){
 	if(!init()){
 	}else{
 		jumpSound.loadSound("data/sounds/smb3_jump.wav");
 		bumpSound.loadSound("data/sounds/smb3_bump.wav");
-		currentLevel=new level("data/levels/level1.lvl");
+		currentLevel=new level(levelPath.c_str());
 		currentLevel->loadData();
 		for(int j=0;j<currentLevel->enemies.size();j++)
 		cout<<"enemies: "<<currentLevel->enemies[j]->shape.x<<"y:"<<currentLevel->enemies[j]->shape.y<<endl;
 		getPlayers(players,numOfPlayers);
-		players[0]->setTexture("data/graphics/entities/player/player1.png");
+		//players[0]->setTexture("data/graphics/entities/player/player1.png");
 		players[0]->setKeycodes(SDLK_a,SDLK_d,SDLK_v,SDLK_c);
 		players[0]->setShape(100,100,tileSize,tileSize);
-		players[1]->setTexture("data/graphics/entities/player/player2.png");
+		//players[1]->setTexture("data/graphics/entities/player/player2.png");
 		players[1]->setKeycodes(SDLK_LEFT,SDLK_RIGHT,SDLK_p,SDLK_o);
 		players[1]->setShape(150,100,tileSize,tileSize);
 		createPlayerRectangles(playerRectangles,players);
@@ -86,7 +87,7 @@ int main(void){
 				SDL_RenderClear(renderer);
 				for(int i=0;i<numOfPlayers;i++){
 					players[i]->setViewport();
-					currentLevel->renderBG(players[i]->camera);
+					currentLevel->renderBG({players[i]->camera.x/4,players[i]->camera.y/4,players[i]->camera.w,players[i]->camera.h});
 					for(int j=0;j<currentLevel->getNumOfBlocks();j++){
 						currentLevel->blocks[j]->render((int)players[i]->camera.x,(int)players[i]->camera.y,(int)players[i]->camera.w,(int)players[i]->camera.h); }
 					int size=currentLevel->enemies.size();

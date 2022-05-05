@@ -1,4 +1,6 @@
 convert int float rect
-have one tile sheet for textures and algorithm to check which grass texture
+#have one tile sheet for textures and algorithm to check which grass texture
 angular shape
 sound when colliding
+animation at landing point
+put jump and other attacks on stack?

@@ -11,7 +11,9 @@ using namespace std;
 class entity{
 public:
 	int id;
+	int type=0;
 	int hp=20;
+	int playerNum=0;
 	//data and coordinates
 	void setBasicValues(float,float,float,float,char);
 	//~entity();
@@ -24,19 +26,27 @@ public:
 	void move(int levelwidth,int levelheight,std::vector<rect*>& blocks,std::vector<rect*>& enemies,vector<rect*> &players,int enemyId,int playerId); //updates the position based on previous coordinate changes and checks collision with other objects
 	rect& getCollider();
 	bool isCollided(rect *ent);
+	bool checkIfCollidedLeft(vector<rect*>& rects);
+	bool checkIfCollidedRight(vector<rect*>& rects);
+	bool checkIfCollidedTop(vector<rect*>& rects);
+	bool checkIfCollidedBottom(vector<rect*>& rects);
 	bool near(rect &ent,float xDistance,float yDistance);
 	velocity speed;
 	SDL_Texture *texture=NULL;
 	SDL_RendererFlip flipped=SDL_FLIP_NONE;
 	bool grounded=false;
 	LTimer jumpTimer;
+	LTimer attackTimer;
 	bool jumped=false;
-	int jumpTime=900;
+	int jumpTime=400;
 	float initJumpSpeed=0;
+	int fallTime=400;
+	LTimer fallTimer;
 	LTimer headBumpTimer;
 	int headBumpTime=80;
 	bool headBumped=0;
 	void attack();
+	void reachGround();
 	bool attacked=0;
 	rect &getAttackRect();
 	void getHurt();
@@ -66,7 +76,6 @@ public:
 	void handleInput(SDL_Event &e);
 	void jump();
 	void respawn();
-	int playerNum=0;
 	void renderHealthBar();
 	void setViewport();
 	void renderTest();

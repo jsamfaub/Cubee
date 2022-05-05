@@ -2,6 +2,8 @@
 #include "level.h"
 #include <iostream>
 #include <fstream>
+#include "tileset.h"
+#include "sprites.h"
 using namespace std;
 enum TYPE { day, night, space, underground };
 extern int tileSize;
@@ -60,6 +62,8 @@ level::level(string path){
 					items[items.size()-1]->setBasicValues((float)posx*tileSize,(float)posy*tileSize,(float)tileSize,(float)tileSize,'i');
 					break;
 				case 'r':
+				case 'l':
+				case 'w':
 					if(!colorSet){colorSet=true;c={0xFF,0x00,0x00};}
 				case 'g':
 					if(!colorSet){colorSet=true;c={0x00,0xFF,0x00};}
@@ -77,6 +81,17 @@ level::level(string path){
 					blocks[blocks.size()-1]->x=posx*tileSize;
 					blocks[blocks.size()-1]->y=posy*tileSize;
 					blocks[blocks.size()-1]->fill();
+					if(ch=='#'||ch=='g'||ch=='r'||ch=='l'||ch=='w'){
+						blocks[blocks.size()-1]->textured=true;
+
+					}
+					switch(ch){
+						case '#':blocks[blocks.size()-1]->block.tileSheetPos=STONE;break;
+						case 'g':blocks[blocks.size()-1]->block.tileSheetPos=GRASS;break;
+						case 'r':blocks[blocks.size()-1]->block.tileSheetPos=DIRT;break;
+						case 'w':blocks[blocks.size()-1]->block.tileSheetPos=WOOD;break;
+						case 'l':blocks[blocks.size()-1]->block.tileSheetPos=LEAVES;break;
+					}
 					break;
 				case '0':
 				default:;
@@ -89,8 +104,9 @@ level::level(string path){
 	bg=NULL;
 	levelMusic=NULL;
 
-	cin.get();
 	playMusic();
+	tileTexture=SDL_CreateTextureFromSurface(renderer,IMG_Load(TILEPATH));
+	playersTexture=SDL_CreateTextureFromSurface(renderer,IMG_Load(PLAYERSPATH));
 }
 int level::getNumOfBlocks(){
 	return blocks.size();

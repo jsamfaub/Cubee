@@ -1,6 +1,7 @@
 #include "entity.h"
 #include "sounds.h"
 #include <iostream>
+#include "sprites.h"
 using namespace std;
 extern SDL_Renderer *renderer;
 extern int screenwidth;
@@ -44,7 +45,15 @@ void entity::render(rect& camera){
 	renderShape.h=(int)shape.h;
 	renderShape.x=(int)shape.x-camera.x;
 	renderShape.y=(int)shape.y-camera.y;
+	if(type==0)
 	SDL_RenderCopyEx(renderer,texture,NULL,&renderShape,0.0,NULL,flipped);
+	if(type==1){
+	SDL_Rect temp;
+	if(!jumped) temp={0,playerNum*16,16,16};
+	else	     temp={16,playerNum*16,16,16};
+	SDL_RenderCopyEx(renderer,playersTexture,&temp,&renderShape,0.0,NULL,flipped);
+	}
+
 }
 void entity::turnLeft(){
 	flipped=SDL_FLIP_HORIZONTAL;
@@ -99,12 +108,15 @@ void entity::move(int levelwidth,int levelheight,vector<rect*>& blocks,vector<re
 	if(shape.x>levelwidth-shape.w)shape.x=levelwidth-shape.w-1.0;
 	speed.y=10;
 	int initShapey=shape.y;
+	float jumpSpeed=(float)((int) (speed.jump * (jumpTime/100)-((float)jumpTimer.getTicks()/100)*((float)jumpTimer.getTicks()/100)));
+	jumpSpeed=22.0;
 	if(jumped && jumpTimer.isStarted()){
-		if(jumpTimer.getTicks()>=jumpTime){
+		if(jumpTimer.getTicks()>=jumpTime||jumpSpeed<=0){
 			jumpTimer.stop();
 			jumped=0;
+			fallTimer.start();
 		}else{
-			shape.y-= (float)((int) (speed.jump * (jumpTime/100)-((float)jumpTimer.getTicks()/100)*((float)jumpTimer.getTicks()/100)));
+			shape.y-=(float)jumpSpeed*(((float)jumpTimer.getTicks()-(float)jumpTime)*((float)jumpTimer.getTicks()-(float)jumpTime)/((float)jumpTime*(float)jumpTime));
 		}
 	}else{
 		if(headBumped){
@@ -112,20 +124,32 @@ void entity::move(int levelwidth,int levelheight,vector<rect*>& blocks,vector<re
 				headBumped=0;
 				headBumpTimer.stop();
 			}
-		}else
-			shape.y+=speed.y;
+		}else{
+			if(fallTimer.isStarted()){
+				if(fallTimer.getTicks()>=fallTime){
+					if(!grounded)
+						shape.y+=speed.y;
+					else
+						fallTimer.stop();
+				}else{
+					shape.y+=(float)speed.y*(1.0-(((float)fallTimer.getTicks()-(float)fallTime)*((float)fallTimer.getTicks()-(float)fallTime)/((float)fallTime*(float)fallTime)));
+				}
+			}else{
+				shape.y+=speed.y;
+			}
+		}
 	}
 	grounded=false;
 	for(int i=0;i<size;i++){
 		if(isCollided(blocks[i]) && shape.y>=initShapey){
 			shape.y=blocks[i]->y-shape.h;
-			grounded=true;
-			jumped=false;
+			reachGround();
 			break;
 		}
 		if(isCollided(blocks[i]) && jumped){
 			shape.y=blocks[i]->y+blocks[i]->h;
 			jumpTimer.stop();
+			fallTimer.start();
 			Mix_HaltChannel(-1);
 			headBumpTimer.start();headBumped=1;bumpSound.play();
 
@@ -136,8 +160,7 @@ void entity::move(int levelwidth,int levelheight,vector<rect*>& blocks,vector<re
 		if(i==enemyId)continue;
 		if(isCollided(enemies[i]) && speed.y>=0){
 			shape.y=enemies[i]->y-shape.h;
-			grounded=true;
-			jumped=false;
+			reachGround();
 			break;
 		}
 		if(isCollided(enemies[i]) && speed.y<0){
@@ -149,8 +172,7 @@ void entity::move(int levelwidth,int levelheight,vector<rect*>& blocks,vector<re
 		if(i==playerId)continue;
 		if(isCollided(players[i]) && speed.y>=0){
 			shape.y=players[i]->y-shape.h;
-			grounded=true;
-			jumped=false;
+			reachGround();
 			break;
 		}
 		if(isCollided(players[i]) && speed.y<0){
@@ -161,7 +183,13 @@ void entity::move(int levelwidth,int levelheight,vector<rect*>& blocks,vector<re
 	if(shape.y<0.0)shape.y=0.0;
 	if(shape.y>levelheight-shape.h)shape.y=levelheight-shape.h-1.0;
 
-	shape.y=650.0;
+	if(!grounded && !fallTimer.isStarted()){
+		fallTimer.start();
+	}
+}
+void entity::reachGround(){
+	grounded=true;
+	jumped=false;
 }
 rect& entity::getCollider(){
 	return shape;
@@ -194,16 +222,25 @@ void item::hearUse(){
 	cout<<"Use!"<<endl;
 }
 void entity::attack(){
-	cout<<"Attack!"<<endl;
-	cout<<"X:"<<shape.x<<endl;
-	cout<<"Y:"<<shape.y<<endl;
+	if(!attacked){
+		attackTimer.start();
+		attacked=true;
+		cout<<"Attack!"<<endl;
+		cout<<"X:"<<shape.x<<endl;
+		cout<<"Y:"<<shape.y<<endl;
+	}
+	if(attackTimer.getTicks()>=400){
+		attacked=false;
+	}
 }
 void player::jump(){
-	initJumpSpeed=speed.jump;
-	jumpTimer.start();
-	grounded=0;
-	jumped=1;
-	jumpSound.play();
+	if(grounded){
+		initJumpSpeed=speed.jump;
+		jumpTimer.start();
+		grounded=0;
+		jumped=1;
+		jumpSound.play();
+	}
 }
 void entity::die(){
 	cout<<"Die!"<<endl;
@@ -223,9 +260,9 @@ void player::renderHealthBar(){
 }
 void getPlayers(vector<player*> &players,int numOfPlayers){
 	switch(numOfPlayers){
-		case 1:players.push_back(new player);players[0]->setBasicValues((float)tileSize,(float)tileSize,(float)tileSize,(float)tileSize,1);players[0]->camera={0,0,screenwidth,screenheight};break;
-		case 2:players.push_back(new player);players[0]->setBasicValues((float)2*tileSize,(float)tileSize,(float)tileSize,(float)tileSize,1);players[0]->camera={0,0,screenwidth/2,screenheight};players[0]->viewport={0,0,screenwidth/2,screenheight};
-players.push_back(new player);players[1]->setBasicValues((float)tileSize,(float)tileSize,(float)tileSize,(float)tileSize,2);players[1]->camera={0,0,screenwidth/2,screenheight};players[1]->viewport={screenwidth/2,0,screenwidth/2,screenheight};break;
+		case 1:players.push_back(new player);players[0]->setBasicValues((float)tileSize,(float)tileSize,(float)tileSize,(float)tileSize,1);players[0]->camera={0,0,screenwidth,screenheight};players[0]->type=1;break;
+		case 2:players.push_back(new player);players[0]->setBasicValues((float)2*tileSize,(float)tileSize,(float)tileSize,(float)tileSize,1);players[0]->camera={0,0,screenwidth/2,screenheight};players[0]->viewport={0,0,screenwidth/2,screenheight};players[0]->playerNum=0;players[0]->type=1;
+players.push_back(new player);players[1]->setBasicValues((float)tileSize,(float)tileSize,(float)tileSize,(float)tileSize,2);players[1]->camera={0,0,screenwidth/2,screenheight};players[1]->viewport={screenwidth/2,0,screenwidth/2,screenheight};players[1]->playerNum=1;players[1]->type=1;break;
 		case 3:
 		case 4:
 		default: cout<<"Error: wrong number of players: "<<numOfPlayers<<endl;break;
@@ -248,10 +285,10 @@ void player::handleInput(SDL_Event &e){
 			turnRight();
 		}
 		if(e.key.keysym.sym==jumpKey){
-			if(grounded)jump();
+			jump();
 		}
 		if(e.key.keysym.sym==attackKey){
-			if(!attacked)attack();
+			attack();
 		}
 	}
 	if(e.type==SDL_KEYUP && e.key.repeat==0){

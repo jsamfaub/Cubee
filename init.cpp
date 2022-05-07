@@ -5,12 +5,14 @@
 #include <iostream>
 #include "entity.h"
 #include "window.h"
+#include "level.h"
 using namespace std;
 
 extern SDL_Renderer* renderer;
 extern window windows[3];
 extern int screenwidth;
 extern int screenheight;
+extern level *currentLevel;
 
 bool init(void){
 	bool success=1;
@@ -36,4 +38,8 @@ bool init(void){
 		}
 	}
 	return success;
+}
+void destroyGame(){
+	windows[0].free();
+	delete currentLevel;
 }

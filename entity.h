@@ -7,11 +7,18 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
 #include "LTimer.h"
+#include "sounds.h"
+enum TYPES {BLOCK=1,ENEMY,PLAYER,ITEM};
+enum ITEMTYPES {STAR};
+struct controls{
+	int left,right,attack,jump;
+};
 using namespace std;
 class entity{
 public:
-	int id;
+	int id=0;
 	int type=0;
+	int ownType=0;
 	int hp=20;
 	int playerNum=0;
 	//data and coordinates
@@ -26,10 +33,10 @@ public:
 	void move(int levelwidth,int levelheight,std::vector<rect*>& blocks,std::vector<rect*>& enemies,vector<rect*> &players,int enemyId,int playerId); //updates the position based on previous coordinate changes and checks collision with other objects
 	rect& getCollider();
 	bool isCollided(rect *ent);
-	bool checkIfCollidedLeft(vector<rect*>& rects);
-	bool checkIfCollidedRight(vector<rect*>& rects);
-	bool checkIfCollidedTop(vector<rect*>& rects);
-	bool checkIfCollidedBottom(vector<rect*>& rects);
+	bool checkIfCollidedLeft(vector<rect*>& rects,int type);
+	bool checkIfCollidedRight(vector<rect*>& rects,int type);
+	bool checkIfCollidedTop(vector<rect*>& rects,int type);
+	bool checkIfCollidedBottom(vector<rect*>& rects,int type);
 	bool near(rect &ent,float xDistance,float yDistance);
 	velocity speed;
 	SDL_Texture *texture=NULL;
@@ -53,6 +60,7 @@ public:
 	void die();
 	bool touchingX=false;
 	bool touchingY=false;
+	rect& getRect(void);
 };
 class enemy:public entity{
 public:
@@ -60,10 +68,15 @@ public:
 };
 class item:public entity{
 public:
-	Mix_Chunk* collectSound=NULL;
+	sound* collectSound=NULL;
 	Mix_Chunk* useSound=NULL;
 	void hearCollect();
 	void hearUse();
+	void interact();
+	int itemType=-1;
+	bool collected=0;
+	void collect();
+	void setItemType(int);
 };
 class player:public entity{
 public:
@@ -83,3 +96,4 @@ public:
 };
 void getPlayers(vector<player*> &players,int);
 void createPlayerRectangles(vector<rect*> &rects,vector<player*>);
+void createItemRectangles(vector<rect*> &rects,vector<item*>);

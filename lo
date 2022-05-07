@@ -1,0 +1,378 @@
+g++ --no-warnings main.cpp arguments.cpp init.cpp entity.cpp window.cpp sounds.cpp textures.cpp level.cpp rect.cpp LTimer.cpp -lSDL2 -lSDL2_image -lSDL2_mixer -o cubee
+level.cpp: In constructor ‘level::level(std::string)’:
+level.cpp:31:16: error: no match for ‘operator==’ (operand types are ‘std::fstream’ {aka ‘std::basic_fstream<char>’} and ‘long int’)
+   31 |         if(file==NULL){
+      |                ^
+level.cpp:31:16: note: candidate: ‘operator==(int, long int)’ (built-in)
+level.cpp:31:16: note:   no known conversion for argument 1 from ‘std::fstream’ {aka ‘std::basic_fstream<char>’} to ‘int’
+In file included from /usr/include/c++/11.2.0/bits/stl_algobase.h:64,
+                 from /usr/include/c++/11.2.0/bits/specfun.h:45,
+                 from /usr/include/c++/11.2.0/cmath:1927,
+                 from /usr/include/c++/11.2.0/math.h:36,
+                 from /usr/local/include/SDL2/SDL_stdinc.h:84,
+                 from /usr/local/include/SDL2/SDL_main.h:25,
+                 from /usr/local/include/SDL2/SDL.h:32,
+                 from entity.h:2,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/stl_pair.h:466:5: note: candidate: ‘template<class _T1, class _T2> constexpr bool std::operator==(const std::pair<_T1, _T2>&, const std::pair<_T1, _T2>&)’
+  466 |     operator==(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/stl_pair.h:466:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::pair<_T1, _T2>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/stl_algobase.h:67,
+                 from /usr/include/c++/11.2.0/bits/specfun.h:45,
+                 from /usr/include/c++/11.2.0/cmath:1927,
+                 from /usr/include/c++/11.2.0/math.h:36,
+                 from /usr/local/include/SDL2/SDL_stdinc.h:84,
+                 from /usr/local/include/SDL2/SDL_main.h:25,
+                 from /usr/local/include/SDL2/SDL.h:32,
+                 from entity.h:2,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/stl_iterator.h:419:5: note: candidate: ‘template<class _Iterator> constexpr bool std::operator==(const std::reverse_iterator<_Iterator>&, const std::reverse_iterator<_Iterator>&)’
+  419 |     operator==(const reverse_iterator<_Iterator>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/stl_iterator.h:419:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::reverse_iterator<_Iterator>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/stl_algobase.h:67,
+                 from /usr/include/c++/11.2.0/bits/specfun.h:45,
+                 from /usr/include/c++/11.2.0/cmath:1927,
+                 from /usr/include/c++/11.2.0/math.h:36,
+                 from /usr/local/include/SDL2/SDL_stdinc.h:84,
+                 from /usr/local/include/SDL2/SDL_main.h:25,
+                 from /usr/local/include/SDL2/SDL.h:32,
+                 from entity.h:2,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/stl_iterator.h:458:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator==(const std::reverse_iterator<_Iterator>&, const std::reverse_iterator<_IteratorR>&)’
+  458 |     operator==(const reverse_iterator<_IteratorL>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/stl_iterator.h:458:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::reverse_iterator<_Iterator>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/stl_algobase.h:67,
+                 from /usr/include/c++/11.2.0/bits/specfun.h:45,
+                 from /usr/include/c++/11.2.0/cmath:1927,
+                 from /usr/include/c++/11.2.0/math.h:36,
+                 from /usr/local/include/SDL2/SDL_stdinc.h:84,
+                 from /usr/local/include/SDL2/SDL_main.h:25,
+                 from /usr/local/include/SDL2/SDL.h:32,
+                 from entity.h:2,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/stl_iterator.h:1533:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator==(const std::move_iterator<_IteratorL>&, const std::move_iterator<_IteratorR>&)’
+ 1533 |     operator==(const move_iterator<_IteratorL>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/stl_iterator.h:1533:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::move_iterator<_IteratorL>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/stl_algobase.h:67,
+                 from /usr/include/c++/11.2.0/bits/specfun.h:45,
+                 from /usr/include/c++/11.2.0/cmath:1927,
+                 from /usr/include/c++/11.2.0/math.h:36,
+                 from /usr/local/include/SDL2/SDL_stdinc.h:84,
+                 from /usr/local/include/SDL2/SDL_main.h:25,
+                 from /usr/local/include/SDL2/SDL.h:32,
+                 from entity.h:2,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/stl_iterator.h:1601:5: note: candidate: ‘template<class _Iterator> constexpr bool std::operator==(const std::move_iterator<_IteratorL>&, const std::move_iterator<_IteratorL>&)’
+ 1601 |     operator==(const move_iterator<_Iterator>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/stl_iterator.h:1601:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::move_iterator<_IteratorL>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/vector:64,
+                 from entity.h:4,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/allocator.h:230:5: note: candidate: ‘template<class _T1, class _T2> bool std::operator==(const std::allocator<_Tp1>&, const std::allocator<_T2>&)’
+  230 |     operator==(const allocator<_T1>&, const allocator<_T2>&)
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/allocator.h:230:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::allocator<_Tp1>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/vector:67,
+                 from entity.h:4,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/stl_vector.h:1892:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::operator==(const std::vector<_Tp, _Alloc>&, const std::vector<_Tp, _Alloc>&)’
+ 1892 |     operator==(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/stl_vector.h:1892:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::vector<_Tp, _Alloc>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/char_traits.h:40,
+                 from /usr/include/c++/11.2.0/string:40,
+                 from entity.h:6,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/postypes.h:222:5: note: candidate: ‘template<class _StateT> bool std::operator==(const std::fpos<_StateT>&, const std::fpos<_StateT>&)’
+  222 |     operator==(const fpos<_StateT>& __lhs, const fpos<_StateT>& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/postypes.h:222:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::fpos<_StateT>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/basic_string.h:48,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/string_view:534:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr bool std::operator==(std::basic_string_view<_CharT, _Traits>, std::basic_string_view<_CharT, _Traits>)’
+  534 |     operator==(basic_string_view<_CharT, _Traits> __x,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/string_view:534:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::basic_fstream<char>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/basic_string.h:48,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/string_view:540:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr bool std::operator==(std::basic_string_view<_CharT, _Traits>, std::__type_identity_t<std::basic_string_view<_CharT, _Traits> >)’
+  540 |     operator==(basic_string_view<_CharT, _Traits> __x,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/string_view:540:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::basic_fstream<char>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/basic_string.h:48,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/string_view:563:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr bool std::operator==(std::__type_identity_t<std::basic_string_view<_CharT, _Traits> >, std::basic_string_view<_CharT, _Traits>)’
+  563 |     operator==(__type_identity_t<basic_string_view<_CharT, _Traits>> __x,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/string_view:563:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   mismatched types ‘std::basic_string_view<_CharT, _Traits>’ and ‘long int’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/basic_string.h:6225:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> bool std::operator==(const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>&, const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+ 6225 |     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/basic_string.h:6225:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/basic_string.h:6233:5: note: candidate: ‘template<class _CharT> typename __gnu_cxx::__enable_if<std::__is_char<_Tp>::__value, bool>::__type std::operator==(const std::__cxx11::basic_string<_CharT>&, const std::__cxx11::basic_string<_CharT>&)’
+ 6233 |     operator==(const basic_string<_CharT>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/basic_string.h:6233:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::__cxx11::basic_string<_CharT>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/basic_string.h:6247:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> bool std::operator==(const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>&, const _CharT*)’
+ 6247 |     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/basic_string.h:6247:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+/usr/include/c++/11.2.0/bits/basic_string.h:6288:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> bool std::operator==(const _CharT*, const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+ 6288 |     operator==(const _CharT* __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/basic_string.h:6288:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   mismatched types ‘const _CharT*’ and ‘std::basic_fstream<char>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/locale_facets.h:48,
+                 from /usr/include/c++/11.2.0/bits/basic_ios.h:37,
+                 from /usr/include/c++/11.2.0/ios:44,
+                 from /usr/include/c++/11.2.0/ostream:38,
+                 from /usr/include/c++/11.2.0/iostream:39,
+                 from level.cpp:3:
+/usr/include/c++/11.2.0/bits/streambuf_iterator.h:226:5: note: candidate: ‘template<class _CharT, class _Traits> bool std::operator==(const std::istreambuf_iterator<_CharT, _Traits>&, const std::istreambuf_iterator<_CharT, _Traits>&)’
+  226 |     operator==(const istreambuf_iterator<_CharT, _Traits>& __a,
+      |     ^~~~~~~~
+/usr/include/c++/11.2.0/bits/streambuf_iterator.h:226:5: note:   template argument deduction/substitution failed:
+In file included from /usr/include/time.h:29,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:35,
+                 from /usr/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/gthr.h:148,
+                 from /usr/include/c++/11.2.0/ext/atomicity.h:35,
+                 from /usr/include/c++/11.2.0/bits/basic_string.h:39,
+                 from /usr/include/c++/11.2.0/string:55,
+                 from entity.h:6,
+                 from level.cpp:1:
+level.cpp:31:18: note:   ‘std::fstream’ {aka ‘std::basic_fstream<char>’} is not derived from ‘const std::istreambuf_iterator<_CharT, _Traits>’
+   31 |         if(file==NULL){
+      |                  ^~~~
+In file included from /usr/include/c++/11.2.0/bits/ios_base.h:46,
+                 from /usr/include/c++/11.2.0/ios:42,
+                 from /usr/include/c++/11.2.0/ostream:38,
+                 from /usr/include/c++/11.2.0/iostream:39,
+                 from level.cpp:3:
+/usr/include/c++/11.2.0/system_error:344:3: note: candidate: ‘bool std::operator==(const std::error_code&, const std::error_code&)’
+  344 |   operator==(const error_code& __lhs, const error_code& __rhs) noexcept
+      |   ^~~~~~~~
+/usr/include/c++/11.2.0/system_error:344:32: note:   no known conversion for argument 1 from ‘std::fstream’ {aka ‘std::basic_fstream<char>’} to ‘const std::error_code&’
+  344 |   operator==(const error_code& __lhs, const error_code& __rhs) noexcept
+      |              ~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/11.2.0/system_error:351:3: note: candidate: ‘bool std::operator==(const std::error_code&, const std::error_condition&)’
+  351 |   operator==(const error_code& __lhs, const error_condition& __rhs) noexcept
+      |   ^~~~~~~~
+/usr/include/c++/11.2.0/system_error:351:32: note:   no known conversion for argument 1 from ‘std::fstream’ {aka ‘std::basic_fstream<char>’} to ‘const std::error_code&’
+  351 |   operator==(const error_code& __lhs, const error_condition& __rhs) noexcept
+      |              ~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/11.2.0/system_error:359:3: note: candidate: ‘bool std::operator==(const std::error_condition&, const std::error_condition&)’
+  359 |   operator==(const error_condition& __lhs,
+      |   ^~~~~~~~
+/usr/include/c++/11.2.0/system_error:359:37: note:   no known conversion for argument 1 from ‘std::fstream’ {aka ‘std::basic_fstream<char>’} to ‘const std::error_condition&’
+  359 |   operator==(const error_condition& __lhs,
+      |              ~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/11.2.0/system_error:392:3: note: candidate: ‘bool std::operator==(const std::error_condition&, const std::error_code&)’
+  392 |   operator==(const error_condition& __lhs, const error_code& __rhs) noexcept
+      |   ^~~~~~~~
+/usr/include/c++/11.2.0/system_error:392:37: note:   no known conversion for argument 1 from ‘std::fstream’ {aka ‘std::basic_fstream<char>’} to ‘const std::error_condition&’
+  392 |   operator==(const error_condition& __lhs, const error_code& __rhs) noexcept
+      |              ~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+make: *** [Makefile:6: all] Error 1

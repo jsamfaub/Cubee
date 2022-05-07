@@ -8,6 +8,7 @@ using namespace std;
 enum TYPE { day, night, space, underground };
 extern int tileSize;
 extern SDL_Renderer* renderer;
+extern int numOfStars;
 struct entityInfo{
 	float x;
 	float y;
@@ -28,6 +29,10 @@ level::level(string path){
 	}
 	fstream file;
 	file.open(path, ios::in);
+	if(!file.is_open()){
+		cout<<"Failed to load: "<<path<<endl;
+		exit(EXIT_FAILURE);
+	}
 	char block=NULL;
 	char ch;
 	int x=0,y=0;
@@ -58,8 +63,12 @@ level::level(string path){
 					enemies[index]->id=index;
 					break;
 				case 'i':
+				case 's':
+					numOfStars++;
 					items.push_back(new item);
 					items[items.size()-1]->setBasicValues((float)posx*tileSize,(float)posy*tileSize,(float)tileSize,(float)tileSize,'i');
+					items[items.size()-1]->type=ITEM;
+					items[items.size()-1]->setItemType(STAR);
 					break;
 				case 'r':
 				case 'l':
@@ -107,6 +116,7 @@ level::level(string path){
 	playMusic();
 	tileTexture=SDL_CreateTextureFromSurface(renderer,IMG_Load(TILEPATH));
 	playersTexture=SDL_CreateTextureFromSurface(renderer,IMG_Load(PLAYERSPATH));
+	itemsTexture=SDL_CreateTextureFromSurface(renderer,IMG_Load(ITEMSPATH));
 }
 int level::getNumOfBlocks(){
 	return blocks.size();
@@ -144,7 +154,7 @@ bool level::loadBGTexture(){
 }
 bool level::loadMusic(){
 	bool success=true;
-	levelMusic=Mix_LoadMUS("data/music/_levelmusic.mp3");
+	levelMusic=Mix_LoadMUS("data/music/goodbadugly.mp3");
 	if(levelMusic==NULL){
 		cout<<Mix_GetError()<<endl;
 		success=false;
@@ -173,4 +183,10 @@ void level::renderBG(rect camera){
 	SDL_RenderCopy(renderer,bg,NULL,&bgDest);
 	bgDest.x-=bgDest.w;
 	SDL_RenderCopy(renderer,bg,NULL,&bgDest);
+}
+level::~level(){
+	stopMusic();
+}
+void level::stopMusic(){
+	Mix_PauseMusic();
 }

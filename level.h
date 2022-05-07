@@ -14,6 +14,7 @@ public:
 	bool loadData();
 	bool loadEntities();
 	void playMusic();
+	void stopMusic();
 	
 	void renderBlocks(rect &camera);
 

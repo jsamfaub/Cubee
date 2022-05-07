@@ -1,4 +1,4 @@
-OBJS = main.cpp init.cpp entity.cpp window.cpp sounds.cpp textures.cpp level.cpp rect.cpp LTimer.cpp
+OBJS = main.cpp arguments.cpp init.cpp entity.cpp window.cpp sounds.cpp textures.cpp level.cpp rect.cpp LTimer.cpp
 OBJ_NAME = cubee
 CC = g++
 LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_mixer

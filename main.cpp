@@ -5,39 +5,51 @@
 #include <iostream>
 #include <vector>
 #include "sounds.h"
+#include "arguments.h"
 using namespace std;
 SDL_Renderer* renderer=NULL;
 int  screenwidth=1280;
 int screenheight=720;
 int tileSize=50;
-string levelPath="data/levels/level3.lvl";
-sound jumpSound,bumpSound;
+string levelPath="data/levels/level1.lvl";
+sound jumpSound,bumpSound,victory;
 level* currentLevel=NULL;
 vector<player*> players;
 vector<rect*> playerRectangles;
-int numOfPlayers=2;
+vector<rect*> itemRectangles;
+int numOfPlayers=1;//1 or 2
+int numOfStars=0;
 extern window windows[3];
+extern controls playerControls[];
 
-int main(int argc,char *argv[]){
+int main(int argc,char *argv[])
+{
+	bool over=0;
+	bool win=0;
 	if(!init()){
 	}else{
+		if(argc>1){
+			handleArguments(argc,argv);
+		}
 		jumpSound.loadSound("data/sounds/smb3_jump.wav");
 		bumpSound.loadSound("data/sounds/smb3_bump.wav");
+		victory.loadSound("data/sounds/smb_stage_clear.wav");
 		currentLevel=new level(levelPath.c_str());
 		currentLevel->loadData();
 		for(int j=0;j<currentLevel->enemies.size();j++)
-		cout<<"enemies: "<<currentLevel->enemies[j]->shape.x<<"y:"<<currentLevel->enemies[j]->shape.y<<endl;
+			currentLevel->enemies[j]->ownType=ENEMY;
 		getPlayers(players,numOfPlayers);
 		//players[0]->setTexture("data/graphics/entities/player/player1.png");
-		players[0]->setKeycodes(SDLK_a,SDLK_d,SDLK_v,SDLK_c);
-		players[0]->setShape(100,100,tileSize,tileSize);
 		//players[1]->setTexture("data/graphics/entities/player/player2.png");
-		players[1]->setKeycodes(SDLK_LEFT,SDLK_RIGHT,SDLK_p,SDLK_o);
-		players[1]->setShape(150,100,tileSize,tileSize);
+		for(int i=0;i<numOfPlayers;i++){
+
+			players[i]->setKeycodes(playerControls[i].left,playerControls[i].right,playerControls[i].attack,playerControls[i].jump);
+			players[i]->setShape(100+(i*50),100,tileSize,tileSize);
+		}
 		createPlayerRectangles(playerRectangles,players);
+		createItemRectangles(itemRectangles,currentLevel->items);
 
 		SDL_Event e;
-		bool over=0;
 		while(!over){
 			while(SDL_PollEvent(&e)>0){
 				if(e.type==SDL_QUIT){
@@ -88,9 +100,26 @@ int main(int argc,char *argv[]){
 				for(int i=0;i<numOfPlayers;i++){
 					players[i]->setViewport();
 					currentLevel->renderBG({players[i]->camera.x/4,players[i]->camera.y/4,players[i]->camera.w,players[i]->camera.h});
+					int size=currentLevel->items.size();
+					for(int j=0;j<size;j++){
+						if(!currentLevel->items[j]->collected){
+							if(players[i]->isCollided(&currentLevel->items[j]->getRect())){
+								currentLevel->items[j]->interact();
+							}
+							currentLevel->items[j]->render(players[i]->camera);
+						}
+					}
+					for(int j=0;j<size;j++){
+						if(currentLevel->items[j]->collected&&currentLevel->items[j]->itemType==STAR){
+							win=true;
+						}else{
+							win=false;
+							break;
+						}
+					}
 					for(int j=0;j<currentLevel->getNumOfBlocks();j++){
 						currentLevel->blocks[j]->render((int)players[i]->camera.x,(int)players[i]->camera.y,(int)players[i]->camera.w,(int)players[i]->camera.h); }
-					int size=currentLevel->enemies.size();
+					size=currentLevel->enemies.size();
 					for(int j=0;j<size;j++){
 						currentLevel->enemies[j]->render(players[i]->camera);
 					}
@@ -99,8 +128,16 @@ int main(int argc,char *argv[]){
 					}
 				}
 			}
+
 			SDL_RenderPresent(renderer);
+			if(win){over=true;}
 		}
+	}
+	destroyGame();
+	if(win){
+		victory.play();
+		cout<<"You Win!"<<endl;
+		cin.get();
 	}
 
 	return 0;

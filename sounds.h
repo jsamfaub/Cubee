@@ -1,3 +1,4 @@
+#pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <string>
@@ -9,3 +10,4 @@ public:
 	void play();
 	int channel=-1;
 };
+#define STARSOUND "data/sounds/sm64_coin.wav"

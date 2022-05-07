@@ -4,3 +4,4 @@
 SDL_Texture *tileTexture=NULL;
 SDL_Surface *tileSurface=NULL;
 SDL_Texture *playersTexture=NULL;
+SDL_Texture *itemsTexture=NULL;

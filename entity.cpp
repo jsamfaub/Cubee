@@ -2,12 +2,20 @@
 #include "sounds.h"
 #include <iostream>
 #include "sprites.h"
+#include "sounds.h"
 using namespace std;
 extern SDL_Renderer *renderer;
 extern int screenwidth;
 extern int screenheight;
 extern int tileSize;
 extern sound jumpSound;extern sound bumpSound;
+controls playerControls[4] = {
+	{SDLK_a,SDLK_d,SDLK_v,SDLK_c},
+	{SDLK_LEFT,SDLK_RIGHT,SDLK_p,SDLK_o},
+	{SDLK_LEFT,SDLK_RIGHT,SDLK_p,SDLK_o},
+	{SDLK_LEFT,SDLK_RIGHT,SDLK_p,SDLK_o}
+};
+
 //entity::entity(){
 //}
 //entity::~entity(){
@@ -45,13 +53,17 @@ void entity::render(rect& camera){
 	renderShape.h=(int)shape.h;
 	renderShape.x=(int)shape.x-camera.x;
 	renderShape.y=(int)shape.y-camera.y;
+	SDL_Rect temp;
 	if(type==0)
 	SDL_RenderCopyEx(renderer,texture,NULL,&renderShape,0.0,NULL,flipped);
-	if(type==1){
-	SDL_Rect temp;
+	if(type==PLAYER){
 	if(!jumped) temp={0,playerNum*16,16,16};
 	else	     temp={16,playerNum*16,16,16};
 	SDL_RenderCopyEx(renderer,playersTexture,&temp,&renderShape,0.0,NULL,flipped);
+	}
+	if(type==ITEM){
+		temp={0,0,16,16};
+		SDL_RenderCopyEx(renderer,itemsTexture,&temp,&renderShape,0.0,NULL,flipped);
 	}
 
 }
@@ -65,44 +77,16 @@ void entity::move(int levelwidth,int levelheight,vector<rect*>& blocks,vector<re
 
 	rect initial=shape;
 	shape.x+=speed.x;
-	//cout<<"speedx:"<<speed.x<<endl;
 	int size=blocks.size();
 	int enemySize=enemies.size();
 	int playerSize=players.size();
-	//cout<<"X:"<<shape.x<<"Y:"<<shape.y<<endl;
 	
-	for(int i=0;i<size;i++){
-		if(isCollided(blocks[i]) && speed.x>=0){
-			shape.x=blocks[i]->x-shape.w;
-			break;
-		}
-		if(isCollided(blocks[i]) && speed.x<0){
-			shape.x=blocks[i]->x+blocks[i]->w;
-			break;
-		}
-	}
-	for(int i=0;i<enemySize;i++){
-		if(i==enemyId)continue;
-		if(isCollided(enemies[i]) && speed.x>=0){
-			shape.x=enemies[i]->x-shape.w;
-			break;
-		}
-		if(isCollided(enemies[i]) && speed.x<0){
-			shape.x=enemies[i]->x+enemies[i]->w;
-			break;
-		}
-	}
-	for(int i=0;i<playerSize;i++){
-		if(i==playerId)continue;
-		if(isCollided(players[i]) && speed.x>=0){
-			shape.x=players[i]->x-shape.w;
-			break;
-		}
-		if(isCollided(players[i]) && speed.x<0){
-			shape.x=players[i]->x+players[i]->w;
-			break;
-		}
-	}
+	checkIfCollidedRight(blocks ,BLOCK);
+	 checkIfCollidedLeft(blocks ,BLOCK);
+	checkIfCollidedRight(enemies,ENEMY);
+	 checkIfCollidedLeft(enemies,ENEMY);
+	checkIfCollidedRight(players,PLAYER);
+	 checkIfCollidedLeft(players,PLAYER);
 
 	if(shape.x<0.0)shape.x=0.0;
 	if(shape.x>levelwidth-shape.w)shape.x=levelwidth-shape.w-1.0;
@@ -260,12 +244,15 @@ void player::renderHealthBar(){
 }
 void getPlayers(vector<player*> &players,int numOfPlayers){
 	switch(numOfPlayers){
-		case 1:players.push_back(new player);players[0]->setBasicValues((float)tileSize,(float)tileSize,(float)tileSize,(float)tileSize,1);players[0]->camera={0,0,screenwidth,screenheight};players[0]->type=1;break;
-		case 2:players.push_back(new player);players[0]->setBasicValues((float)2*tileSize,(float)tileSize,(float)tileSize,(float)tileSize,1);players[0]->camera={0,0,screenwidth/2,screenheight};players[0]->viewport={0,0,screenwidth/2,screenheight};players[0]->playerNum=0;players[0]->type=1;
-players.push_back(new player);players[1]->setBasicValues((float)tileSize,(float)tileSize,(float)tileSize,(float)tileSize,2);players[1]->camera={0,0,screenwidth/2,screenheight};players[1]->viewport={screenwidth/2,0,screenwidth/2,screenheight};players[1]->playerNum=1;players[1]->type=1;break;
+		case 1:players.push_back(new player);players[0]->setBasicValues((float)tileSize,(float)tileSize,(float)tileSize,(float)tileSize,1);players[0]->camera={0,0,screenwidth,screenheight};players[0]->type=PLAYER;players[0]->id=0;break;
+		case 2:players.push_back(new player);players[0]->setBasicValues((float)2*tileSize,(float)tileSize,(float)tileSize,(float)tileSize,1);players[0]->camera={0,0,screenwidth/2,screenheight};players[0]->viewport={0,0,screenwidth/2,screenheight};players[0]->playerNum=0;players[0]->id=0;players[0]->type=PLAYER;
+players.push_back(new player);players[1]->setBasicValues((float)tileSize,(float)tileSize,(float)tileSize,(float)tileSize,2);players[1]->camera={0,0,screenwidth/2,screenheight};players[1]->viewport={screenwidth/2,0,screenwidth/2,screenheight};players[1]->playerNum=1;players[1]->id=1;players[1]->type=PLAYER;break;
 		case 3:
 		case 4:
 		default: cout<<"Error: wrong number of players: "<<numOfPlayers<<endl;break;
+	}
+	for(int i=0;i<numOfPlayers;i++){
+		players[i]->ownType=PLAYER;
 	}
 }
 void player::setKeycodes(SDL_Keycode left, SDL_Keycode right, SDL_Keycode attack, SDL_Keycode jump){
@@ -336,5 +323,99 @@ void createPlayerRectangles(vector<rect*> &rectangles,vector<player*> players){
 		rectangles[rectangles.size()-1]->y=y;
 		rectangles[rectangles.size()-1]->w=w;
 		rectangles[rectangles.size()-1]->h=h;
+	}
+}
+void createItemRectangles(vector<rect*> &rectangles,vector<item*> items){
+	int size=items.size();
+	float x,y,w,h;
+	for(int i=0;i<size;i++){
+		x=items[i]->shape.x;
+		y=items[i]->shape.y;
+		w=items[i]->shape.w;
+		h=items[i]->shape.h;
+		rectangles.push_back(new rect);
+		rectangles[rectangles.size()-1]->x=x;
+		rectangles[rectangles.size()-1]->y=y;
+		rectangles[rectangles.size()-1]->w=w;
+		rectangles[rectangles.size()-1]->h=h;
+	}
+}
+bool entity::checkIfCollidedRight(vector<rect*>& rects,int type){
+	bool collision=false;
+	int size=rects.size();
+	for(int i=0;i<size;i++){
+		if(i==id&&type==ownType)
+			continue;
+		if(isCollided(rects[i])&&speed.x>=0){
+			shape.x=rects[i]->x-shape.w;
+			collision=true;
+			break;
+		}
+	}
+	return collision;
+}
+bool entity::checkIfCollidedLeft(vector<rect*>& rects,int type){
+	bool collision=false;
+	int size=rects.size();
+	for(int i=0;i<size;i++){
+		if(i==id&&type==ownType){
+			continue;
+		}
+		if(isCollided(rects[i])&&speed.x<0){
+			shape.x=rects[i]->x+rects[i]->w;
+			collision=true;
+			break;
+		}
+	}
+	return collision;
+}
+bool entity::checkIfCollidedTop(vector<rect*>& rects,int type){
+	bool collision=false;
+	int size=rects.size();
+	for(int i=0;i<size;i++){
+		if(i==id&&type==ownType)
+			continue;
+		if(isCollided(rects[i])&&speed.y<0){
+			shape.y=rects[i]->y+rects[i]->h;
+			collision=true;
+			break;
+		}
+	}
+	return collision;
+}
+bool entity::checkIfCollidedBottom(vector<rect*>& rects,int type){
+	bool collision=false;
+	int size=rects.size();
+	for(int i=0;i<size;i++){
+		if(i==id&&type==ownType)
+			continue;
+		if(isCollided(rects[i])&&speed.y>=0){
+			shape.y=rects[i]->y+shape.h;
+			collision=true;
+			break;
+		}
+	}
+	return collision;
+}
+void item::interact(){
+	switch(itemType){
+		case STAR: collect();break;
+		default: cout<<"no type for this item"<<endl;break;
+	}
+}
+void item::collect(){
+	collectSound->play();
+	collected=true;
+}
+rect temp;
+rect& entity::getRect(void){
+	temp={shape.x,shape.y,shape.w,shape.h};
+	return temp;
+}
+void item::setItemType(int item){
+	itemType=item;
+	collectSound=new sound;
+	switch(item){
+		case STAR:collectSound->loadSound(STARSOUND);break;
 	}
 }

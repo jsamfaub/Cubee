@@ -24,6 +24,8 @@ extern controls playerControls[];
 
 int main(int argc,char *argv[])
 {
+	cout<<"cassou texto"<<endl;
+	cout<<"prepare for bed at 21h!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 	bool over=0;
 	bool win=0;
 	if(!init()){
